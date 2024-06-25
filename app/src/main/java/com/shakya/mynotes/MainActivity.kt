@@ -21,15 +21,19 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,6 +45,8 @@ import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
+import com.shakya.mynotes.ui.MyNotesNavigation
 import com.shakya.mynotes.ui.theme.MyNotesTheme
 import com.shakya.mynotes.ui.theme.colorList
 
@@ -48,67 +54,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent {}
-    }
-}
-
-@Composable
-fun MainScreen(modifier: Modifier = Modifier) {
-    Scaffold(modifier = modifier, bottomBar = { BottomAppBar() }) { contentPadding ->
-        LazyColumn(contentPadding = contentPadding) {
-
-        }
-
-    }
-}
-
-@Composable
-fun NotesItem(modifier: Modifier = Modifier) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors()
-            .copy(containerColor = colorList.random(), contentColor = Color.White)
-    ) {
-        Column(modifier = Modifier.padding(8.dp)) {
-            Text(text = "Title", style = MaterialTheme.typography.titleMedium)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Description", style = MaterialTheme.typography.bodyMedium)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Date", style = MaterialTheme.typography.labelSmall)
-            Spacer(modifier = Modifier.height(8.dp))
+        setContent {
+            MyNotesNavigation(navHostController = rememberNavController())
         }
     }
 }
 
-@Composable
-fun BottomAppBar(modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(8.dp)
-    ) {
-        TextField(value = "", onValueChange = {}, label = { Text(text = "Enter a Note") },
-            modifier = Modifier
-                .weight(0.8f)
-                .fillMaxWidth()
-        )
-        IconButton(
-            onClick = { /*TODO*/ }, modifier = Modifier
-                .weight(0.2f)
-                .fillMaxWidth()
-        ) {
-            Icon(imageVector = Icons.AutoMirrored.Default.Send, contentDescription = null)
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun MainScreenPreview() {
-    MyNotesTheme {
-        //MainScreen()
-        NotesItem()
-        // BottomAppBar()
-    }
-}
