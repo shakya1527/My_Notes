@@ -9,10 +9,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 //import androidx.compose.foundation.layout.FlowColumnScopeInstance.align
 //import androidx.compose.foundation.layout.FlowRowScopeInstance.alignBy
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -20,6 +22,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,10 +37,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shakya.mynotes.ui.theme.MyNotesTheme
+import com.shakya.mynotes.ui.theme.colorList
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,8 +54,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
-    Scaffold(modifier=modifier, bottomBar ={ BottomAppBar()}) { contentPadding->
-        LazyColumn(contentPadding=contentPadding) {
+    Scaffold(modifier = modifier, bottomBar = { BottomAppBar() }) { contentPadding ->
+        LazyColumn(contentPadding = contentPadding) {
 
         }
 
@@ -57,18 +63,41 @@ fun MainScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
+fun NotesItem(modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors()
+            .copy(containerColor = colorList.random(), contentColor = Color.White)
+    ) {
+        Column(modifier = Modifier.padding(8.dp)) {
+            Text(text = "Title", style = MaterialTheme.typography.titleMedium)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "Description", style = MaterialTheme.typography.bodyMedium)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "Date", style = MaterialTheme.typography.labelSmall)
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+    }
+}
+
+@Composable
 fun BottomAppBar(modifier: Modifier = Modifier) {
-    Row(modifier= modifier
-        .fillMaxWidth()
-        .background(MaterialTheme.colorScheme.background)
-        .padding(8.dp)){
-        TextField(value = "", onValueChange = {} , label = { Text(text = "Enter a Note")},
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(8.dp)
+    ) {
+        TextField(value = "", onValueChange = {}, label = { Text(text = "Enter a Note") },
             modifier = Modifier
                 .weight(0.8f)
-                .fillMaxWidth())
-        IconButton(onClick = { /*TODO*/ }, modifier = Modifier
-            .weight(0.2f)
-            .fillMaxWidth()) {
+                .fillMaxWidth()
+        )
+        IconButton(
+            onClick = { /*TODO*/ }, modifier = Modifier
+                .weight(0.2f)
+                .fillMaxWidth()
+        ) {
             Icon(imageVector = Icons.AutoMirrored.Default.Send, contentDescription = null)
         }
     }
@@ -78,7 +107,8 @@ fun BottomAppBar(modifier: Modifier = Modifier) {
 @Composable
 private fun MainScreenPreview() {
     MyNotesTheme {
-        MainScreen()
-           // BottomAppBar()
+        //MainScreen()
+        NotesItem()
+        // BottomAppBar()
     }
 }
