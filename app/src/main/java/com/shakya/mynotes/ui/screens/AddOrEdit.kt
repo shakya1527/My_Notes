@@ -33,7 +33,12 @@ import com.shakya.mynotes.ui.theme.MyNotesTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddOrEdit(modifier: Modifier = Modifier, navHostController: NavHostController = rememberNavController(), args:Note) {
+fun AddOrEdit(
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController = rememberNavController(),
+    notes: List<Note> = listOf(),
+    args: Note
+) {
     var title by remember {
         mutableStateOf(args.title)
     }
@@ -46,26 +51,37 @@ fun AddOrEdit(modifier: Modifier = Modifier, navHostController: NavHostControlle
         topBar = {
             TopAppBar(title = { Text(text = "Add or Edit") }, navigationIcon = {
                 IconButton(
-                onClick = { navHostController.navigateUp() }, modifier = Modifier
-            ) {
-                Icon(imageVector = Icons.AutoMirrored.Default.ArrowBack, contentDescription = null)
-            }
-            }, actions = {IconButton(
-                onClick = { /*TODO*/ }, modifier = Modifier
-            ) {
-                Icon(imageVector = Icons.Default.Check, contentDescription = null)
-            }})
+                    onClick = { navHostController.navigateUp() }, modifier = Modifier
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                        contentDescription = null
+                    )
+                }
+            }, actions = {
+                IconButton(
+                    onClick = { /*TODO*/ }, modifier = Modifier
+                ) {
+                    Icon(imageVector = Icons.Default.Check, contentDescription = null)
+                }
+            })
         }
-    ) { contentPadding  ->
-        Column(modifier= Modifier
-            .padding(contentPadding)
-            .padding(8.dp)) {
-            TextField(value = title, onValueChange = {title=it}, label = { Text(text = "Title") },
+    ) { contentPadding ->
+        Column(
+            modifier = Modifier
+                .padding(contentPadding)
+                .padding(8.dp)
+        ) {
+            TextField(value = title,
+                onValueChange = { title = it },
+                label = { Text(text = "Title") },
                 modifier = Modifier
                     .fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
-            TextField(value = des, onValueChange = {des=it}, label = { Text(text = "Description") },
+            TextField(value = des,
+                onValueChange = { des = it },
+                label = { Text(text = "Description") },
                 modifier = Modifier
                     .fillMaxWidth()
             )
@@ -78,6 +94,6 @@ fun AddOrEdit(modifier: Modifier = Modifier, navHostController: NavHostControlle
 @Composable
 private fun AddOrEditPreview() {
     MyNotesTheme {
-        AddOrEdit(args=Note(title = "My Notes", description = "Welcome to Android World"))
+        AddOrEdit(args = Note(title = "My Notes", description = "Welcome to Android World"))
     }
 }

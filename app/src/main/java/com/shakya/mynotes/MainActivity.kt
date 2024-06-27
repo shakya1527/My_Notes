@@ -46,6 +46,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
+import com.shakya.mynotes.db.Note
 import com.shakya.mynotes.ui.MyNotesNavigation
 import com.shakya.mynotes.ui.theme.MyNotesTheme
 import com.shakya.mynotes.ui.theme.colorList
@@ -55,7 +56,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MyNotesNavigation(navHostController = rememberNavController())
+            val notes by remember{
+                mutableStateOf(listOf<Note>())
+            }
+            MyNotesNavigation(navHostController = rememberNavController(), notes = notes)
         }
     }
 }

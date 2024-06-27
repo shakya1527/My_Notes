@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.shakya.mynotes.db.Note
 import com.shakya.mynotes.ui.AddOrEditArgs
 import com.shakya.mynotes.ui.theme.MyNotesTheme
 import com.shakya.mynotes.ui.theme.colorList
@@ -32,7 +33,8 @@ import com.shakya.mynotes.ui.theme.colorList
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    navHostController: NavHostController = rememberNavController()
+    navHostController: NavHostController = rememberNavController(),
+    notes: List<Note> = listOf()
 ) {
     Scaffold(modifier = modifier, floatingActionButton = {
         FloatingActionButton(onClick = { navHostController.navigate(AddOrEditArgs()) }) {
