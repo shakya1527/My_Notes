@@ -19,16 +19,28 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.shakya.mynotes.db.Note
 import com.shakya.mynotes.ui.theme.MyNotesTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddOrEdit(modifier: Modifier = Modifier, navHostController: NavHostController = rememberNavController()) {
+fun AddOrEdit(modifier: Modifier = Modifier, navHostController: NavHostController = rememberNavController(), args:Note) {
+    var title by remember {
+        mutableStateOf(args.title)
+    }
+    var des by remember {
+        mutableStateOf(args.description)
+    }
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -48,12 +60,12 @@ fun AddOrEdit(modifier: Modifier = Modifier, navHostController: NavHostControlle
         Column(modifier= Modifier
             .padding(contentPadding)
             .padding(8.dp)) {
-            TextField(value = "", onValueChange = {}, label = { Text(text = "Title") },
+            TextField(value = title, onValueChange = {title=it}, label = { Text(text = "Title") },
                 modifier = Modifier
                     .fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
-            TextField(value = "", onValueChange = {}, label = { Text(text = "Description") },
+            TextField(value = des, onValueChange = {des=it}, label = { Text(text = "Description") },
                 modifier = Modifier
                     .fillMaxWidth()
             )
@@ -66,6 +78,6 @@ fun AddOrEdit(modifier: Modifier = Modifier, navHostController: NavHostControlle
 @Composable
 private fun AddOrEditPreview() {
     MyNotesTheme {
-        AddOrEdit()
+        AddOrEdit(args=Note(title = "My Notes", description = "Welcome to Android World"))
     }
 }

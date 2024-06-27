@@ -24,17 +24,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.shakya.mynotes.ui.AddOrEdit
+import com.shakya.mynotes.ui.AddOrEditArgs
 import com.shakya.mynotes.ui.theme.MyNotesTheme
 import com.shakya.mynotes.ui.theme.colorList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(modifier: Modifier = Modifier, navHostController: NavHostController= rememberNavController()) {
-    Scaffold(modifier = modifier, floatingActionButton = { FloatingActionButton(onClick = { navHostController.navigate(AddOrEdit)}) {
-        Icon(imageVector = Icons.Default.Add, contentDescription = null)
+fun MainScreen(
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController = rememberNavController()
+) {
+    Scaffold(modifier = modifier, floatingActionButton = {
+        FloatingActionButton(onClick = { navHostController.navigate(AddOrEditArgs()) }) {
+            Icon(imageVector = Icons.Default.Add, contentDescription = null)
 
-    }
+        }
     }, topBar = { TopAppBar(title = { Text(text = "My Notes") }) }) { contentPadding ->
         LazyColumn(contentPadding = contentPadding) {
 
