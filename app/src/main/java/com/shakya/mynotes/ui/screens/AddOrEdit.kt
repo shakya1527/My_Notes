@@ -60,7 +60,7 @@ fun AddOrEdit(
                 }
             }, actions = {
                 IconButton(
-                    onClick = { /*TODO*/ }, modifier = Modifier
+                    onClick = { save(notes.toMutableList(), Note(title, des,args.created), args.title.isNotEmpty()) }, modifier = Modifier
                 ) {
                     Icon(imageVector = Icons.Default.Check, contentDescription = null)
                 }
@@ -87,6 +87,15 @@ fun AddOrEdit(
             )
         }
 
+    }
+}
+
+fun save(notes: MutableList<Note>, args: Note, isUpdate: Boolean) {
+    if (isUpdate) {
+        val index = notes.indexOfFirst { it.created == args.created}
+        notes[index] = args
+    } else {
+        notes.add(args)
     }
 }
 

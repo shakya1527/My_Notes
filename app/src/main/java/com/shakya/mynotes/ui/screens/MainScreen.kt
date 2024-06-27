@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.shakya.mynotes.db.Note
+import com.shakya.mynotes.db.toFormattedDate
 import com.shakya.mynotes.ui.AddOrEditArgs
 import com.shakya.mynotes.ui.theme.MyNotesTheme
 import com.shakya.mynotes.ui.theme.colorList
@@ -43,25 +45,27 @@ fun MainScreen(
         }
     }, topBar = { TopAppBar(title = { Text(text = "My Notes") }) }) { contentPadding ->
         LazyColumn(contentPadding = contentPadding) {
-
+                items(notes){
+                        NotesItem(note = it)
+                }
         }
 
     }
 }
 
 @Composable
-fun NotesItem(modifier: Modifier = Modifier) {
+fun NotesItem(modifier: Modifier = Modifier,note: Note) {
     Card(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors()
             .copy(containerColor = colorList.random(), contentColor = Color.White)
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
-            Text(text = "Title", style = MaterialTheme.typography.titleMedium)
+            Text(text = note.title, style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Description", style = MaterialTheme.typography.bodyMedium)
+            Text(text = note.description, style = MaterialTheme.typography.bodyMedium)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Date", style = MaterialTheme.typography.labelSmall)
+            Text(text = note.created.toFormattedDate(), style = MaterialTheme.typography.labelSmall)
             Spacer(modifier = Modifier.height(8.dp))
         }
     }
