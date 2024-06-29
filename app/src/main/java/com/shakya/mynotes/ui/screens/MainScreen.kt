@@ -1,5 +1,7 @@
 package com.shakya.mynotes.ui.screens
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -30,6 +33,7 @@ import com.shakya.mynotes.db.toFormattedDate
 import com.shakya.mynotes.ui.AddOrEditArgs
 import com.shakya.mynotes.ui.theme.MyNotesTheme
 import com.shakya.mynotes.ui.theme.colorList
+import com.shakya.mynotes.ui.toAddOrEdit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,10 +47,12 @@ fun MainScreen(
             Icon(imageVector = Icons.Default.Add, contentDescription = null)
 
         }
-    }, topBar = { TopAppBar(title = { Text(text = "My Notes") }) }) { contentPadding ->
-        LazyColumn(contentPadding = contentPadding) {
+    }, topBar = { CenterAlignedTopAppBar(title = { Text(text = "My Notes") }) }) { contentPadding ->
+        LazyColumn(contentPadding = contentPadding , verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(notes){
-                        NotesItem(note = it)
+                        NotesItem(note = it, onClick = {
+                            navHostController.navigate(it.toAddOrEdit())
+                        })
                 }
         }
 
@@ -54,9 +60,9 @@ fun MainScreen(
 }
 
 @Composable
-fun NotesItem(modifier: Modifier = Modifier,note: Note) {
+fun NotesItem(modifier: Modifier = Modifier,note: Note, onClick:()->Unit={}) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().clickable { onClick.invoke() }. padding(horizontal = 8.dp),
         colors = CardDefaults.cardColors()
             .copy(containerColor = colorList.random(), contentColor = Color.White)
     ) {
