@@ -5,6 +5,7 @@ import android.widget.ImageButton
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,6 +37,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,33 +50,32 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.shakya.mynotes.db.Note
+import com.shakya.mynotes.db.NotesRepository
 import com.shakya.mynotes.ui.MyNotesNavigation
+import com.shakya.mynotes.ui.NotesViewModel
 import com.shakya.mynotes.ui.theme.MyNotesTheme
 import com.shakya.mynotes.ui.theme.colorList
 
 class MainActivity : ComponentActivity() {
-    private val _notes = mutableStateOf<List<Note>>(emptyList())
-    val notes: State<List<Note>> get() = _notes
+    private val viewModel: NotesViewModel by viewModels {
+        NotesViewModel.provideFactory(NotesRepository(this))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MyNotesNavigation(navHostController = rememberNavController(), notes = notes.value, addOrEdit = ::addOrUpdate)
+            MyNotesTheme {
+                MyNotesNavigation(
+                    navHostController = rememberNavController(),
+                    notes = viewModel.notes.collectAsState(
+                        initial = emptyList()
+                    ).value,
+                    addOrEdit = viewModel::addNote
+                )
+            }
         }
     }
 
-    private fun addOrUpdate(note: Note) {
-        val index = _notes.value.indexOfFirst {
-            it.created == note.created
-        }
-        if (index == -1)
-            _notes.value += note
-        else {
-            val notes = _notes.value.toMutableList()
-            notes[index] = note
-            _notes.value = notes
-
-        }
-    }
 }
 
