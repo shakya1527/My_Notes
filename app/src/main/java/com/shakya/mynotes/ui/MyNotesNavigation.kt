@@ -27,7 +27,7 @@ fun AddOrEditArgs.toNotes() = Note(this.title, this.description, this.created)
 
 
 @Composable
-fun MyNotesNavigation(modifier: Modifier = Modifier, navHostController: NavHostController, notes: List<Note>) {
+fun MyNotesNavigation(modifier: Modifier = Modifier, navHostController: NavHostController, notes: List<Note>, addOrEdit:(Note)->Unit = {}) {
     NavHost(
         navController = navHostController,
         startDestination = MainScreen
@@ -37,7 +37,7 @@ fun MyNotesNavigation(modifier: Modifier = Modifier, navHostController: NavHostC
         }
         composable<AddOrEditArgs> {entry->
             val args=entry.toRoute<AddOrEditArgs>().toNotes()
-            AddOrEdit(args= args, navHostController = navHostController, notes = notes)
+            AddOrEdit(args= args, navHostController = navHostController, addOrEdit = addOrEdit)
         }
     }
 }

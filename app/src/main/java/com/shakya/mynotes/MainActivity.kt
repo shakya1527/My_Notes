@@ -35,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,14 +53,27 @@ import com.shakya.mynotes.ui.theme.MyNotesTheme
 import com.shakya.mynotes.ui.theme.colorList
 
 class MainActivity : ComponentActivity() {
+    private val _notes = mutableStateOf<List<Note>>(emptyList())
+    val notes: State<List<Note>> get() = _notes
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val notes by remember{
-                mutableStateOf(listOf<Note>())
-            }
-            MyNotesNavigation(navHostController = rememberNavController(), notes = notes)
+            MyNotesNavigation(navHostController = rememberNavController(), notes = notes.value, addOrEdit = ::addOrUpdate)
+        }
+    }
+
+    private fun addOrUpdate(note: Note) {
+        val index = _notes.value.indexOfFirst {
+            it.created == note.created
+        }
+        if (index == -1)
+            _notes.value += note
+        else {
+            val notes = _notes.value.toMutableList()
+            notes[index] = note
+            _notes.value = notes
+
         }
     }
 }

@@ -36,8 +36,8 @@ import com.shakya.mynotes.ui.theme.MyNotesTheme
 fun AddOrEdit(
     modifier: Modifier = Modifier,
     navHostController: NavHostController = rememberNavController(),
-    notes: List<Note> = listOf(),
-    args: Note
+    args: Note,
+    addOrEdit: (Note) -> Unit = {}
 ) {
     var title by remember {
         mutableStateOf(args.title)
@@ -60,7 +60,10 @@ fun AddOrEdit(
                 }
             }, actions = {
                 IconButton(
-                    onClick = { save(notes.toMutableList(), Note(title, des,args.created), args.title.isNotEmpty()) }, modifier = Modifier
+                    onClick = {
+                        addOrEdit.invoke(Note(title, des, args.created))
+                        navHostController.navigateUp()
+                    }, modifier = Modifier
                 ) {
                     Icon(imageVector = Icons.Default.Check, contentDescription = null)
                 }
@@ -72,14 +75,16 @@ fun AddOrEdit(
                 .padding(contentPadding)
                 .padding(8.dp)
         ) {
-            TextField(value = title,
+            TextField(
+                value = title,
                 onValueChange = { title = it },
                 label = { Text(text = "Title") },
                 modifier = Modifier
                     .fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
-            TextField(value = des,
+            TextField(
+                value = des,
                 onValueChange = { des = it },
                 label = { Text(text = "Description") },
                 modifier = Modifier
@@ -92,7 +97,7 @@ fun AddOrEdit(
 
 fun save(notes: MutableList<Note>, args: Note, isUpdate: Boolean) {
     if (isUpdate) {
-        val index = notes.indexOfFirst { it.created == args.created}
+        val index = notes.indexOfFirst { it.created == args.created }
         notes[index] = args
     } else {
         notes.add(args)
