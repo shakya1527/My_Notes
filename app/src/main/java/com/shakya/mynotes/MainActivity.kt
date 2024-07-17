@@ -55,11 +55,11 @@ import com.shakya.mynotes.ui.MyNotesNavigation
 import com.shakya.mynotes.ui.NotesViewModel
 import com.shakya.mynotes.ui.theme.MyNotesTheme
 import com.shakya.mynotes.ui.theme.colorList
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val viewModel: NotesViewModel by viewModels {
-        NotesViewModel.provideFactory(NotesRepository(this))
-    }
+    private val viewModel: NotesViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
