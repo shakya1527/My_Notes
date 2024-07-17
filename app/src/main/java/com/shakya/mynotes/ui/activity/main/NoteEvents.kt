@@ -1,4 +1,4 @@
-package com.shakya.mynotes.ui.activity
+package com.shakya.mynotes.ui.activity.main
 
 import com.shakya.mynotes.db.Note
 import com.shakya.mynotes.utils.Theme

@@ -1,4 +1,4 @@
-package com.shakya.mynotes.ui.activity
+package com.shakya.mynotes.ui.activity.main
 
 import android.content.SharedPreferences
 import androidx.compose.runtime.State

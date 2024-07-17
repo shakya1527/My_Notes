@@ -1,4 +1,4 @@
-package com.shakya.mynotes.ui.activity
+package com.shakya.mynotes.ui.activity.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

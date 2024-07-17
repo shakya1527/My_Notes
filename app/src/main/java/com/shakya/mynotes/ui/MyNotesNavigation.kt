@@ -1,13 +1,12 @@
 package com.shakya.mynotes.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.shakya.mynotes.db.Note
-import com.shakya.mynotes.ui.activity.NoteEvents
+import com.shakya.mynotes.ui.activity.main.NoteEvents
 import com.shakya.mynotes.ui.screens.AddOrEdit
 import com.shakya.mynotes.ui.screens.MainScreen
 import com.shakya.mynotes.utils.Theme

@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.shakya.mynotes.db.Note
-import com.shakya.mynotes.ui.activity.NoteEvents
+import com.shakya.mynotes.ui.activity.main.NoteEvents
 import com.shakya.mynotes.ui.theme.MyNotesTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

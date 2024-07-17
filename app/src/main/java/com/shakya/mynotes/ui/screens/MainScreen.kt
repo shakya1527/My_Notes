@@ -45,7 +45,7 @@ import androidx.navigation.compose.rememberNavController
 import com.shakya.mynotes.db.Note
 import com.shakya.mynotes.db.toFormattedDate
 import com.shakya.mynotes.ui.AddOrEditArgs
-import com.shakya.mynotes.ui.activity.NoteEvents
+import com.shakya.mynotes.ui.activity.main.NoteEvents
 import com.shakya.mynotes.ui.theme.MyNotesTheme
 import com.shakya.mynotes.ui.theme.colorList
 import com.shakya.mynotes.ui.toAddOrEdit
