@@ -76,6 +76,7 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.dagger.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.fragment)
+    implementation(libs.androidx.material.icons.extended)
 }
 kapt {
     correctErrorTypes = true

@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.shakya.mynotes.db.Note
+import com.shakya.mynotes.ui.activity.NoteEvents
 import com.shakya.mynotes.ui.screens.AddOrEdit
 import com.shakya.mynotes.ui.screens.MainScreen
 import kotlinx.serialization.Serializable
@@ -27,17 +28,21 @@ fun AddOrEditArgs.toNotes() = Note(this.title, this.description, this.created)
 
 
 @Composable
-fun MyNotesNavigation(modifier: Modifier = Modifier, navHostController: NavHostController, notes: List<Note>, addOrEdit:(Note)->Unit = {}) {
+fun MyNotesNavigation(
+    navHostController: NavHostController,
+    notes: List<Note>,
+    onEvent : (NoteEvents) -> Unit = {},
+) {
     NavHost(
         navController = navHostController,
         startDestination = MainScreen
     ) {
         composable<MainScreen> {
-            MainScreen(navHostController = navHostController, notes = notes)
+            MainScreen(navHostController = navHostController, notes = notes,onEvent = onEvent)
         }
         composable<AddOrEditArgs> {entry->
             val args=entry.toRoute<AddOrEditArgs>().toNotes()
-            AddOrEdit(args= args, navHostController = navHostController, addOrEdit = addOrEdit)
+            AddOrEdit(args= args, navHostController = navHostController, onEvent = onEvent)
         }
     }
 }
