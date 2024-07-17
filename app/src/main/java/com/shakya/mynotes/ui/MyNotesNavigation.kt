@@ -10,6 +10,7 @@ import com.shakya.mynotes.db.Note
 import com.shakya.mynotes.ui.activity.NoteEvents
 import com.shakya.mynotes.ui.screens.AddOrEdit
 import com.shakya.mynotes.ui.screens.MainScreen
+import com.shakya.mynotes.utils.Theme
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -30,6 +31,7 @@ fun AddOrEditArgs.toNotes() = Note(this.title, this.description, this.created)
 @Composable
 fun MyNotesNavigation(
     navHostController: NavHostController,
+    theme: Theme = Theme.AUTO,
     notes: List<Note>,
     onEvent : (NoteEvents) -> Unit = {},
 ) {
@@ -38,7 +40,12 @@ fun MyNotesNavigation(
         startDestination = MainScreen
     ) {
         composable<MainScreen> {
-            MainScreen(navHostController = navHostController, notes = notes,onEvent = onEvent)
+            MainScreen(
+                navHostController = navHostController,
+                notes = notes,
+                onEvent = onEvent,
+                theme = theme
+            )
         }
         composable<AddOrEditArgs> {entry->
             val args=entry.toRoute<AddOrEditArgs>().toNotes()

@@ -13,8 +13,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.BrightnessAuto
+import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.DeleteSweep
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
@@ -46,6 +49,7 @@ import com.shakya.mynotes.ui.activity.NoteEvents
 import com.shakya.mynotes.ui.theme.MyNotesTheme
 import com.shakya.mynotes.ui.theme.colorList
 import com.shakya.mynotes.ui.toAddOrEdit
+import com.shakya.mynotes.utils.Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,6 +57,7 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     navHostController: NavHostController = rememberNavController(),
     notes: List<Note> = listOf(),
+    theme: Theme = Theme.AUTO,
     onEvent: (NoteEvents) -> Unit = {}
 ) {
     var isDialogVisible by remember { mutableStateOf(false) }
@@ -63,21 +68,39 @@ fun MainScreen(
             title = { Text(text = "Delete All") },
             text = { Text(text = "Are you sure you want to delete all notes?") })
     }
-    Scaffold(modifier = modifier, floatingActionButton = {
-        FloatingActionButton(onClick = { navHostController.navigate(AddOrEditArgs()) }) {
-            Icon(imageVector = Icons.Default.Add, contentDescription = null)
-        }
-    }, topBar = {
-        CenterAlignedTopAppBar(
-            title = { Text(text = "My Notes") },
-            actions = {
-                if (notes.isNotEmpty())
-                    IconButton(onClick = { isDialogVisible = true }) {
-                        Icon(imageVector = Icons.Default.DeleteSweep, contentDescription = null)
-                    }
+    Scaffold(
+        modifier = modifier,
+        floatingActionButton = {
+            FloatingActionButton(onClick = { navHostController.navigate(AddOrEditArgs()) }) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = null)
             }
-        )
-    }) { contentPadding ->
+        },
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text(text = "My Notes") },
+                actions = {
+                        IconButton(onClick = {
+                            val nextTheme = when(theme){
+                                Theme.AUTO -> Theme.LIGHT
+                                Theme.LIGHT -> Theme.DARK
+                                Theme.DARK -> Theme.AUTO
+                            }
+                            onEvent.invoke(NoteEvents.OnThemeChange(nextTheme))
+                        }) {
+                                Icon(imageVector =when(theme){
+                                    Theme.AUTO -> Icons.Default.BrightnessAuto
+                                    Theme.LIGHT -> Icons.Default.LightMode
+                                    Theme.DARK -> Icons.Default.DarkMode
+                                }, contentDescription =null )
+                            }
+                    if (notes.isNotEmpty())
+                        IconButton(onClick = { isDialogVisible = true }) {
+                            Icon(imageVector = Icons.Default.DeleteSweep, contentDescription = null)
+                        }
+                }
+            )
+        }
+    ) { contentPadding ->
         if (notes.isEmpty()) {
             Column(
                 modifier = Modifier
